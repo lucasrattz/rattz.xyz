@@ -1,0 +1,184 @@
+@import url(./text.css);
+@import url(./scrollbar.css);
+
+/* General */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 100%;
+    position: relative;
+}
+
+/* 
+    Profile 
+*/
+
+/* Profile Header */
+#profile {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    min-width: 0;
+    max-width: 475px;
+    margin: 120px 20px;
+    z-index: 10;
+    position: relative;
+    background-attachment: fixed;
+}
+
+.header {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 40px;
+}
+
+.info {
+    margin-right: auto;
+    margin-left: 20px;
+}
+
+.info h1 {
+    font-size: xx-large;
+}
+
+.info p {
+    font-size: medium;
+}
+
+.header figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 105px;
+    height: 105px;
+    clip-path: circle();
+}
+
+.header figure img {
+    max-width: 100%;
+}
+
+.header figure figcaption {
+    display: none;
+}
+
+/* Profile Sections */
+#sections {
+    display: flex;
+    flex-direction: column;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    margin-bottom: 15px;
+}
+
+.section .title {
+    margin-bottom: 10px;    
+}
+
+/* Section Entries */
+.entry {
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 40px;
+}
+
+.no-description {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+@media screen and (min-width: 481px) {
+    .entry {
+        display: flex;
+    }
+}
+
+
+.entry-name {
+    display: flex;
+    flex-direction: row;
+    height: 1rem;
+}
+
+.entry-name h2 {
+    justify-content: flex-end;
+    max-height: 1px;
+    display: block;
+}
+
+.entry-name a {
+    text-decoration: none;
+}
+
+.entry-name a:hover {
+    text-decoration: underline;
+}
+
+.entry-name svg {
+    width: 16px;
+    height: auto;
+    margin-left: 10px;
+}
+
+.entry .content p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.timeframe {
+    margin-bottom: auto;
+    max-width: 124px;
+    min-width: 124px;
+}
+
+.entry ul li {
+    display: inline;
+}
+
+.entry ul li:not(:last-child)::after {
+    content: " \2022";
+}
+
+.content img {
+    width: 32px;
+    min-width: 32px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .content img {
+        margin-top: 5px;
+    }
+}
+
+/* 
+    3D Render - WIP
+*/
+
+#render {
+    display: flex;
+    flex: 0.4 0 20%;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#render img {
+    min-width: auto;
+    min-height: 70%;
+    max-width: auto;
+    max-height: 600px;
+    align-content: center;
+    margin-left: 80%;
+    margin-right: 44%;
+}

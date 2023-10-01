@@ -1,0 +1,109 @@
+{
+  "name": "Lucas Rattz",
+  "description": "DevOps Engineer",
+  "profilePicture": "static/assets/profile.jpg",
+  "favicon": "static/assets/favicon.ico",
+  "render": false,
+  "sections": [
+    {
+      "title": "About",
+      "kind": 0,
+      "entries": [
+        {
+          "entryDescription": "Hi, I'm Lucas, a DevOps engineer focused on improving productivity and reliability. Trying to do something new every day. Probably self-hosting some shiny new service or writing a TTRPG campaign right now. Blooming unrest."
+        }
+      ]
+    },
+    {
+      "title": "Professional Experience",
+      "kind": 1,
+      "entries": [
+        {
+          "timeframe": "2022 - present",
+          "entryName": "DevOps Engineer - EZOps.cloud",
+          "entryDescription": "Involved in the entire lifecycle of projects, implementing continuous integration and delivery, infrastructure as code, configuration management and monitoring solutions.",
+          "url": "https://ezops.cloud",
+          "stack": [
+            "AWS",
+            "Docker",
+            "K8s",
+            "Terraform",
+            "Ansible"
+          ]
+        },
+        {
+          "timeframe": "2022 - 2022",
+          "entryName": "Teaching Assistant - CEFET/RJ",
+          "entryDescription": "Assisted first year students in C programming classes. Developed a widely adopted platform in the campus for students to share study materials.",
+          "url": "",
+          "stack": [
+            "C"
+          ]
+        },
+        {
+          "timeframe": "2021 - 2021",
+          "entryName": "Full Cycle Developer - Reder Software",
+          "entryDescription": "Provided levels 2 and 3 technical support for Magento 2 e-commerce stores, ERP and POS software. Developed custom modules and integrations.",
+          "url": "https://redersoftware.com.br",
+          "stack": [
+            "Magento",
+            "GCP",
+            "ERP",
+            "PHP",
+            "JS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "kind": 3,
+      "entries": [
+        {
+          "timeframe": "ongoing",
+          "projectIcon": "https://github.com/lucasrattz/cefetdb2/raw/main/logo.svg",
+          "entryName": "CEFETDB",
+          "entryDescription": "A widely adopted platform for CEFET/RJ Information Systems alumni to share study materials. Currently working in a refactor.",
+          "url": "https:rattz.xyz/cefetdb/",
+          "stack": [
+            "JS",
+            "Go"
+          ]
+        },
+        {
+          "timeframe": "2023",
+          "projectIcon": "https://i.imgur.com/RwM3amC.png",
+          "entryName": "Bladehub",
+          "entryDescription": "A fork of Tim Pasquini's Blades in the Dark Generators with a web front-end.",
+          "url": "https://rattz.xyz/bladehub/",
+          "stack": [
+            "Python",
+            "JS",
+            "CSS"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Links",
+      "kind": 4,
+      "entries": [
+        {
+          "timeframe": "GitHub",
+          "entryName": "lucasrattz",
+          "url": "https://github.com/lucasrattz"
+        },
+        {
+          "timeframe": "LinkedIn",
+          "entryName": "Lucas Rattz",
+          "url": "https://linkedin.com/in/lucasrattz"
+        },
+        {
+          "timeframe": "Resumé",
+          "entryName": "Drive Link",
+          "url": "https://drive.google.com/file/d/1ZI2VB5SMOxKgO2UF7inEDzv2B1wBVcQE/view?usp=drive_link"
+        }
+      ]
+    }
+  ]
+}

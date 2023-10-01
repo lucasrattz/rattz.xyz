@@ -1,0 +1,45 @@
+{{ define "index" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{if .Favicon }}
+        <link rel="icon" type="image/x-icon" href="{{ .Favicon }}">
+    {{ else if .Pic }}
+        <link rel="icon" type="image/x-icon" href="{{ .Pic }}">
+    {{ end }}
+    <link rel="stylesheet" media="all" href="/static/styles/reset.css">
+    <link rel="stylesheet" media="all" href="/static/styles/style.css">
+    <link rel="stylesheet" media="all" href="/static/styles/background.css">
+    <title>{{ .Name }} - {{ .Description }}</title>
+</head>
+<body>
+    <main id="profile">
+    <div class="header">
+        <div class="info">
+            <h1>{{ .Name }}</h1>
+            <p>{{ .Description }}</p>
+        </div>
+        <figure>
+            <img src={{ .Pic }} class="lazy-image">
+            <figcaption>{{ .Name }}</figcaption>
+        </figure>
+    </div>
+    <div id="sections">
+        {{ range .Sections }}
+            {{ template "sections" . }}
+        {{ end }}
+    </div>
+    </main>
+    {{ if .Render }}
+        <div id="render" class="lazy-image">
+            <img src="https://i.pinimg.com/1200x/65/62/25/656225106a0f1fd5b12b5d299ac48721.jpg">
+        </div>
+    {{ end }}
+    <div id="background">
+        {{ template "background" }}
+    </div>
+</body>
+</html>
+{{ end }}

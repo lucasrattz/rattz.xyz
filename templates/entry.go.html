@@ -1,0 +1,44 @@
+{{ define "entry" }}
+
+{{ if .Description }}
+<div class="entry">
+{{ else }}
+<div class="no-description">
+{{ end }}
+    {{ if .Timeframe }}
+        <p class="timeframe">{{ .Timeframe }}</p>
+    {{ end }}
+
+    <div class="content">
+        {{ if .Icon }}
+            <div class="lazy-image">
+                <img src={{ .Icon }}>
+            </div>
+        {{ end }}
+
+        {{ if .Name }}
+            {{ if .Url }}
+            <div class="entry-name">
+                <h2><a href={{ .Url }} target="_blank">{{ .Name }}</a></h2>
+                {{ template "ext-link" }}
+            </div>
+            {{ else }}
+            <h2>{{ .Name }}</h2>
+            {{ end }}
+        {{ end }}
+
+        {{ if .Description }}
+            <p>{{ .Description }}</p>
+        {{ end }}
+
+        {{ if .Stack }}
+            <ul>
+                {{ range .Stack }}
+                    <li>{{ . }}</li>
+                {{ end }}
+            </ul>
+        {{ end }}
+    </div>
+</div>
+
+{{ end }}

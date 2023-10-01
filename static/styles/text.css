@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxygen&display=swap');
+
+:root {
+    --highlight-color: #eff5ff;
+    --text-color: #c1cbda;
+    --tertiary-color: #b1c1dae7;
+
+    --typeface: 'Oxygen', sans-serif;
+}
+
+h1 {
+    color: var(--highlight-color);
+    font-family: var(--typeface);
+}
+
+h2, a {
+    color: var(--highlight-color);
+    font-family: var(--typeface);
+}
+
+p {
+    color: var(--text-color);
+    font-family: var(--typeface);
+}
+
+li, .timeframe {
+    color: var(--tertiary-color);
+    font-family: var(--typeface);
+}

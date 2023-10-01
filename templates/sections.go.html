@@ -1,0 +1,13 @@
+{{ define "sections" }}
+
+    <div class="section">
+        <h2 class="title">{{ .Title }}</h2>
+        {{ if eq .Kind 0 }} {{ else }}
+            <br>
+        {{ end }}
+        {{ range .Entries }}
+            {{ template "entry" . }}
+        {{ end }}
+    </div>
+
+{{ end }}
