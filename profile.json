@@ -64,7 +64,7 @@
           "projectIcon": "https://github.com/lucasrattz/cefetdb2/raw/main/logo.svg",
           "entryName": "CEFETDB",
           "entryDescription": "A widely adopted platform for CEFET/RJ Information Systems alumni to share study materials. Currently working in a refactor.",
-          "url": "https:rattz.xyz/cefetdb/",
+          "url": "https://rattz.xyz/cefetdb/",
           "stack": [
             "JS",
             "Go"
