@@ -1,0 +1,7 @@
+name: Apply infrastructure changes
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tofu'

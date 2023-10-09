@@ -1,0 +1,17 @@
+name: Update
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'profile.json'
+
+jobs:
+  update_profile:
+    name: "Update profile on deployed app"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: GET /update
+        run: |
+          curl -X GET https://rattz.xyz/update
