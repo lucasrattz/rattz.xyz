@@ -1,1 +1,0 @@
-projects/211953221042/locations/global/workloadIdentityPools/ci-pool/providers/github-actions
