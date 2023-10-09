@@ -1,7 +1,7 @@
-variable credentials_file {
-    description = "The path to the service account credentials file"
-    type = string
-}
+# variable credentials_file {
+#     description = "The path to the service account credentials file"
+#     type = string
+# }
 
 variable project_id {
     description = "The project ID"
