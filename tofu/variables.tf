@@ -18,6 +18,11 @@ variable zone {
     type = string
 }
 
+variable repository {
+    description = "The GitHub repository name"
+    type = string
+}
+
 variable remote_profile_url {
     description = "The URL to the remote profile JSON file"
     type = string
