@@ -41,14 +41,13 @@ resource "google_iam_workload_identity_pool_provider" "gha_oidc" {
   display_name                       = "GitHub Actions OIDC Provider"
   description                        = "OIDC identity pool provider for GitHub Actions"
 
-  attribute_mapping                  = {
-    "google.subject"                  = "assertion.sub"
-    "attribute.actor"                   = "assertion.actor"
-    "attribute.repository"            = "assertion.repository"
+  attribute_mapping = {
+    "google.subject"       = "assertion.sub"
+    "attribute.actor"      = "assertion.actor"
+    "attribute.repository" = "assertion.repository"
   }
   oidc {
-    allowed_audiences = [ "https://github.com/octo-org" ]
-    issuer_uri        = "https://token.actions.githubusercontent.com"
+    issuer_uri = "https://token.actions.githubusercontent.com"
   }
 }
 
@@ -57,4 +56,10 @@ resource "google_service_account_iam_binding" "tofu_sa_pool_iam" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [ "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.ci_pool.name}/attribute.repository/${var.repository}" ]
+}
+
+resource "google_project_iam_binding" "read_write_registry_iam" {
+  project = var.project_id
+  role    = "roles/artifactregistry.writer"
+  members = [ "serviceAccount:${google_service_account.tofu_sa.email}" ]
 }
