@@ -38,6 +38,7 @@ func main() {
 	router := http.NewServeMux()
 	router.HandleFunc("/", indexHandler)
 	router.HandleFunc("/update/", updateHandler)
+	router.Handle("/cefetdb", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(fileSystem{http.Dir("./static")})))
 
 	slog.Info("Server running on " + conn)
