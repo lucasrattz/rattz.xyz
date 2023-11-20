@@ -75,7 +75,7 @@
           "projectIcon": "https://i.imgur.com/RwM3amC.png",
           "entryName": "Bladehub",
           "entryDescription": "A fork of Tim Pasquini's Blades in the Dark Generators with a web front-end.",
-          "url": "https://rattz.xyz/bladehub/",
+          "url": "https://lucasrattz.github.io/bladehub/",
           "stack": [
             "Python",
             "JS",
