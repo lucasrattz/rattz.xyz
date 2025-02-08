@@ -3,7 +3,10 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"sync/atomic"
 )
+
+var profileCache atomic.Value
 
 type Profile struct {
 	Name        string    `json:"name"`
@@ -56,25 +59,31 @@ func (k Kind) Kind() string {
 	return "Unknown"
 }
 
-func (p Profile) FromJson(path string) (*Profile, error) {
+func (p *Profile) FromJson(path string) (*Profile, error) {
 	file, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal([]byte(file), &p)
+	err = json.Unmarshal(file, p)
 	if err != nil {
 		return nil, err
 	}
 
-	return &p, nil
+	return p, nil
 }
 
 func getProfile() (Profile, error) {
-	p, err := Profile{}.FromJson("./profile.json")
+	if p, ok := profileCache.Load().(*Profile); ok {
+		return *p, nil
+	}
+
+	loadedProfile, err := new(Profile).FromJson("./profile.json")
 	if err != nil {
 		return Profile{}, err
 	}
 
-	return *p, nil
+	profileCache.Store(loadedProfile)
+
+	return *loadedProfile, nil
 }
