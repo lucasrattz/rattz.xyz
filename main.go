@@ -33,20 +33,21 @@ func main() {
 		slog.Warn("Remote profile URL not set, fallback is " + profileFallback)
 	}
 
+	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
+
 	conn := fmt.Sprint(host, ":", port)
 
 	router := http.NewServeMux()
-	router.HandleFunc("/", indexHandler)
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { indexHandler(w, r, tmpl) })
 	router.HandleFunc("/update/", updateHandler)
-	router.Handle("/cefetdb", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
+	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(fileSystem{http.Dir("./static")})))
 
 	slog.Info("Server running on " + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
+func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
 	var buf bytes.Buffer
 	p, err := getProfile()
 	if err != nil {
@@ -106,7 +107,7 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = os.WriteFile("./profile.json", b, 0644)
+	err = os.WriteFile("./profile.json", b, 0o644)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		slog.Error("Error writing profile object to disk: " + err.Error())
