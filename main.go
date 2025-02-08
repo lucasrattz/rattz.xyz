@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -10,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type fileSystem struct {
@@ -38,13 +40,45 @@ func main() {
 	conn := fmt.Sprint(host, ":", port)
 
 	router := http.NewServeMux()
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { indexHandler(w, r, tmpl) })
+	router.HandleFunc("/", gzipHandler(func(w http.ResponseWriter, r *http.Request) {
+		indexHandler(w, r, tmpl)
+	}))
 	router.HandleFunc("/update/", updateHandler)
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(fileSystem{http.Dir("./static")})))
 
 	slog.Info("Server running on " + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
+}
+
+func gzipHandler(handler http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !acceptsGzip(r) {
+			handler(w, r)
+			return
+		}
+
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		defer gz.Close()
+
+		gzw := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+		handler(gzw, r)
+	}
+}
+
+func acceptsGzip(r *http.Request) bool {
+	return r.Header.Get("Accept-Encoding") != "" &&
+		strings.Contains(r.Header.Get("Accept-Encoding"), "gzip")
+}
+
+type gzipResponseWriter struct {
+	http.ResponseWriter
+	Writer *gzip.Writer
+}
+
+func (w gzipResponseWriter) Write(b []byte) (int, error) {
+	return w.Writer.Write(b)
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
