@@ -11,6 +11,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -21,6 +22,11 @@ type fileSystem struct {
 const (
 	profileFallback = "https://raw.githubusercontent.com/lucasrattz/rattz.xyz/main/profile.json"
 )
+
+var gzipExtensions = map[string]bool{
+	".css": true,
+	".svg": true,
+}
 
 func main() {
 	host, port := os.Getenv("HOST"), os.Getenv("PORT")
@@ -45,7 +51,7 @@ func main() {
 	}))
 	router.HandleFunc("/update/", updateHandler)
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
-	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(fileSystem{http.Dir("./static")})))
+	router.Handle("/static/", gzipFileServer("/static/", http.Dir("./static")))
 
 	slog.Info("Server running on " + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
@@ -67,6 +73,27 @@ func gzipHandler(handler http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
+func gzipFileServer(prefix string, fs http.FileSystem) http.Handler {
+	return http.StripPrefix(prefix, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "public, max-age=31536000") // 1 month
+		if acceptsGzip(r) && shouldGzip(r.URL.Path) {
+			w.Header().Set("Content-Encoding", "gzip")
+			gz := gzip.NewWriter(w)
+			defer gz.Close()
+
+			gzw := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+			http.FileServer(fs).ServeHTTP(gzw, r)
+		} else {
+			http.FileServer(fs).ServeHTTP(w, r)
+		}
+	}))
+}
+
+func shouldGzip(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	return gzipExtensions[ext]
+}
+
 func acceptsGzip(r *http.Request) bool {
 	return r.Header.Get("Accept-Encoding") != "" &&
 		strings.Contains(r.Header.Get("Accept-Encoding"), "gzip")
@@ -82,7 +109,13 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
+	if r.URL.Path != "/" {
+		errorHandler(w, r, http.StatusNotFound, tmpl)
+		return
+	}
+
 	var buf bytes.Buffer
+
 	p, err := getProfile()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -104,8 +137,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Templat
 		slog.Error("Error writing html to buffer: " + err.Error())
 		return
 	}
-
-	slog.Info("Index served to " + r.RemoteAddr)
 }
 
 func updateHandler(w http.ResponseWriter, r *http.Request) {
@@ -152,23 +183,35 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 	slog.Info("Updated profile, request from " + r.RemoteAddr)
 }
 
-func (fs fileSystem) Open(path string) (http.File, error) {
-	f, err := fs.fs.Open(path)
-	if err != nil {
-		return nil, err
-	}
+func errorHandler(w http.ResponseWriter, r *http.Request, status int, tmpl *template.Template) {
+	w.WriteHeader(status)
+	if status == http.StatusNotFound {
+		var buf bytes.Buffer
 
-	s, err := f.Stat()
-	if err != nil {
-		closeErr := f.Close()
-		if closeErr != nil {
-			return nil, closeErr
+		p, err := getProfile()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			slog.Error("Error loading profile: " + err.Error())
+			return
 		}
-	}
 
-	if s.IsDir() {
-		return fs.fs.Open("404")
-	}
+		err = tmpl.ExecuteTemplate(&buf, "404", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			slog.Error("Error executing template: " + err.Error())
+			return
+		}
 
-	return f, nil
+		w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+
+		_, err = buf.WriteTo(w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			slog.Error("Error writing html to buffer: " + err.Error())
+			return
+		}
+	} else {
+		slog.Error("Error " + http.StatusText(status) + " in " + r.URL.Path)
+		http.Error(w, http.StatusText(status), status)
+	}
 }
