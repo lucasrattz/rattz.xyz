@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"compress/gzip"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
+	"io/fs"
 	"log"
 	"log/slog"
 	"net/http"
@@ -15,9 +17,8 @@ import (
 	"strings"
 )
 
-type fileSystem struct {
-	fs http.FileSystem
-}
+//go:embed static/*
+var staticFiles embed.FS
 
 const (
 	profileFallback = "https://raw.githubusercontent.com/lucasrattz/rattz.xyz/main/profile.json"
@@ -41,6 +42,11 @@ func main() {
 		slog.Warn("Remote profile URL not set, fallback is " + profileFallback)
 	}
 
+	subFS, err := fs.Sub(staticFiles, "static")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
 
 	conn := fmt.Sprint(host, ":", port)
@@ -51,7 +57,7 @@ func main() {
 	}))
 	router.HandleFunc("/update/", updateHandler)
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
-	router.Handle("/static/", gzipFileServer("/static/", http.Dir("./static")))
+	router.Handle("/static/", gzipFileServer("/static/", http.FS(subFS)))
 
 	slog.Info("Server running on " + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
