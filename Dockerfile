@@ -7,6 +7,8 @@ COPY ./*.go ./
 
 COPY ./go.mod ./
 
+COPY ./static ./static
+
 RUN go build -o bin .
 
 ## --- Runner image --- ##
@@ -17,8 +19,6 @@ WORKDIR /rattz.xyz
 RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     ca-certificates && \
     rm -rf /var/lib/apt/lists/*
-
-COPY ./static ./static
 
 COPY ./templates ./templates
 
