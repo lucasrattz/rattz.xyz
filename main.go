@@ -59,6 +59,9 @@ func main() {
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", gzipFileServer("/static/", http.FS(subFS)))
 
+	router.HandleFunc("/codex/", codexHandler)
+	router.HandleFunc("/codex/{id}", codexHandler)
+
 	slog.Info("Server running on " + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
 }
