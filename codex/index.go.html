@@ -5,25 +5,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
   <link rel="stylesheet" media="all" href="/static/styles/codex-style.css">
-  <title>Codex Rattzium</title>
+  <title>Lucas Rattz' Codex</title>
 </head>
 
 <body>
-
-  <h1>Title h1</h1>
-  <h2>This is an h2</h2>
+  <section>
+    <h1>Lucas Rattz' Codex</h1>
+    <p>This is where I share my thoughts. All text is 100% human-written.</p>
+    <a href="/">← Go back to the landing page.</a></p>
+  </section>
   <p>
   </p>
-  <hr /><br />
-  <p>Test paragraph</p>
-  <ul>
-    <li>Um</li>
-    <li>Dois</li>
-    <li>Três</li>
-  </ul>
-  <blockquote>Test blockquote.</blockquote>
-  <button>Button</button>
+  <hr />
+  <h4>Posts</h4>
+  <!--
+  {{ range .Pages }}
+  {{ template "page" . }}
+  {{ end }}
+  -->
+  <h5>I haven't posted anything yet. Please come back later.</h5>
 </body>
 
 </html>

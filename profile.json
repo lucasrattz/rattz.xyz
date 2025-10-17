@@ -10,7 +10,8 @@
       "kind": 0,
       "entries": [
         {
-          "entryDescription": "Hi, I'm Lucas, a DevOps/Platform engineer focused on building cloud native solutions. Trying to do something new every day. Probably self-hosting some shiny new service or writing a RPG campaign right now."
+          "entryDescription": "Hi, I'm Lucas, a DevOps/Platform engineer focused on building cloud native solutions. Trying to do something new every day. Probably self-hosting some shiny new service or writing a RPG campaign right now.",
+          "url": "/codex"
         }
       ]
     },
@@ -46,7 +47,7 @@
           "timeframe": "2022 – 2022",
           "entryName": "Teaching Assistant - CEFET/RJ",
           "entryDescription": "Assisted first year students in C programming classes. Developed a widely adopted platform in the campus for students to share study materials.",
-          "url": "",
+          "url": "https://www.cefet-rj.br",
           "stack": [
             "C"
           ]

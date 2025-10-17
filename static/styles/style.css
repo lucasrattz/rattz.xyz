@@ -96,6 +96,15 @@ body {
     margin-bottom: 10px;
 }
 
+a.codex-link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+a.codex-link:hover {
+    text-decoration: underline;
+}
+
 @media screen and (min-width: 481px) {
     .entry {
         display: flex;

@@ -44,10 +44,15 @@ func main() {
 
 	subFS, err := fs.Sub(staticFiles, "static")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf(err.Error())
 	}
 
 	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
+
+	codex, err := newCodex()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	conn := fmt.Sprint(host, ":", port)
 
@@ -59,10 +64,10 @@ func main() {
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", gzipFileServer("/static/", http.FS(subFS)))
 
-	router.HandleFunc("/codex/", codexHandler)
-	router.HandleFunc("/codex/{id}", codexHandler)
+	router.HandleFunc("/codex/", gzipHandler(codex.codexHandler))
+	router.HandleFunc("/codex/{id}", gzipHandler(codex.codexHandler))
 
-	slog.Info("Server running on " + conn)
+	slog.Info("Server running on " + "http://" + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
 }
 
