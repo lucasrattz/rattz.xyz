@@ -22,6 +22,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 COPY ./templates ./templates
 
+COPY ./codex ./codex
+
 COPY profile.json ./
 
 COPY --from=builder /rattz.xyz/bin ./
