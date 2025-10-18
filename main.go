@@ -44,7 +44,7 @@ func main() {
 
 	subFS, err := fs.Sub(staticFiles, "static")
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Fatalf("%s", err.Error())
 	}
 
 	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
@@ -54,18 +54,29 @@ func main() {
 		log.Fatal(err)
 	}
 
+	gallery, err := newGallery()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := updateGallery(gallery); err != nil {
+		slog.Error("Failed to populate gallery on startup:", "err", err)
+	}
+
 	conn := fmt.Sprint(host, ":", port)
 
 	router := http.NewServeMux()
 	router.HandleFunc("/", gzipHandler(func(w http.ResponseWriter, r *http.Request) {
 		indexHandler(w, r, tmpl)
 	}))
-	router.HandleFunc("/update/", updateHandler)
+	router.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) { updateHandler(w, r, gallery) })
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
 	router.Handle("/static/", gzipFileServer("/static/", http.FS(subFS)))
 
 	router.HandleFunc("/codex/", gzipHandler(codex.codexHandler))
 	router.HandleFunc("/codex/{id}", gzipHandler(codex.codexHandler))
+	router.HandleFunc("/codex/pics", gzipHandler(gallery.galleryHandler))
+	router.HandleFunc("/codex/pics/{fileName}", gzipHandler(gallery.galleryHandler))
 
 	slog.Info("Server running on " + "http://" + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
@@ -153,7 +164,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Templat
 	}
 }
 
-func updateHandler(w http.ResponseWriter, r *http.Request) {
+func updateHandler(w http.ResponseWriter, r *http.Request, g *Gallery) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -193,8 +204,13 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/", http.StatusFound)
 	slog.Info("Updated profile, request from " + r.RemoteAddr)
+
+	if err := updateGallery(g); err != nil {
+		slog.Error("Failed to update gallery:", "err", err)
+	}
+
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request, status int, tmpl *template.Template) {

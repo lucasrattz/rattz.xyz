@@ -1,0 +1,53 @@
+{{ define "gallery" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+  <link rel="stylesheet" media="all" href="/static/styles/codex-style.css">
+  <link rel="stylesheet" media="all" href="/static/styles/gallery-style.css">
+  <title>Lucas Rattz' Codex</title>
+</head>
+
+<body>
+  <section>
+    <h1>Lucas Rattz' Codex</h1>
+    <p>A place for sharing pictures I've taken, drawn or somehow created.</p>
+    <p style="white-space: pre-line; line-height: 20pt;"><a href="/codex">✍︎ See posts.</a>
+    <a href="/">← Go back to the landing page.</a></p>
+  </section>
+  <p>
+  </p>
+  <hr />
+  <h4>Pictures</h4>
+
+  {{ range . }}
+  <div class="picture">
+    <a href="#{{ .Filename }}" class="thumbnail">
+        <img src="/codex/pics/{{ .Filename }}" width="200" alt="{{ .Title }}">
+    </a>
+    <div class="meta">
+      <h5>{{ .Title }}</h5>
+      <p>{{ .Date }}</p>
+      <!-- <small>{{ .Description }}</small> -->
+    </div>
+  </div>
+
+  <div id="{{ .Filename }}" class="modal">
+    <div class="content">
+      <a href="#" class="close">×</a>
+      <img src="/codex/pics/{{ .Filename }}">
+      <div class="meta-modal">
+        <h5>{{ .Title }}</h5>
+        <p>{{ .Date }}</p>
+        <!-- <small>{{ .Description }}</small> -->
+      </div>
+    </div>
+  </div>
+  {{ end }}
+
+</body>
+</html>
+{{ end }}

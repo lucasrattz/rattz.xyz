@@ -24,6 +24,10 @@ COPY ./templates ./templates
 
 COPY ./codex ./codex
 
+RUN mkdir ./gallery
+
+COPY ./gallery/index.go.html ./gallery/index.go.html
+
 COPY profile.json ./
 
 COPY --from=builder /rattz.xyz/bin ./

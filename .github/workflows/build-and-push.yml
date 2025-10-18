@@ -6,7 +6,8 @@ on:
     paths:
       - 'static'
       - 'templates'
-      - 'codex'
+      - 'gallery/**.go'
+      - 'gallery/**.html'
       - 'Dockerfile'
       - '**.go'
 
