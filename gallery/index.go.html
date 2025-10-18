@@ -23,31 +23,32 @@
   <hr />
   <h4>Pictures</h4>
 
+  <div id="gallery">
   {{ range . }}
-  <div class="picture">
-    <a href="#{{ .Filename }}" class="thumbnail">
-        <img src="/codex/pics/{{ .Filename }}" width="200" alt="{{ .Title }}">
-    </a>
-    <div class="meta">
-      <h5>{{ .Title }}</h5>
-      <p>{{ .Date }}</p>
-      <!-- <small>{{ .Description }}</small> -->
-    </div>
-  </div>
-
-  <div id="{{ .Filename }}" class="modal">
-    <div class="content">
-      <a href="#" class="close">×</a>
-      <img src="/codex/pics/{{ .Filename }}">
-      <div class="meta-modal">
+    <div class="picture">
+      <a href="#{{ .Filename }}" class="thumbnail">
+          <img src="/codex/pics/{{ .Filename }}" width="200" alt="{{ .Title }}">
+      </a>
+      <div class="meta">
         <h5>{{ .Title }}</h5>
         <p>{{ .Date }}</p>
         <!-- <small>{{ .Description }}</small> -->
       </div>
     </div>
-  </div>
-  {{ end }}
 
+    <div id="{{ .Filename }}" class="modal">
+      <div class="content">
+        <a href="#" class="close">×</a>
+        <img src="/codex/pics/{{ .Filename }}">
+        <div class="meta-modal">
+          <h5>{{ .Title }}</h5>
+          <p>{{ .Date }}</p>
+          <!-- <small>{{ .Description }}</small> -->
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
 </body>
 </html>
 {{ end }}

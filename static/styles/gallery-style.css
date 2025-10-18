@@ -7,6 +7,18 @@
   text-align: left;
 }
 
+@media (max-width: 694px) {
+  .picture {
+    max-width: 140px !important;
+    width: 140px;
+  }
+
+  #gallery {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .picture .thumbnail {
   display: block;
   width: 100%;
