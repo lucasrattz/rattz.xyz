@@ -2,13 +2,22 @@
   display: inline-block;
   vertical-align: top;
   margin: 10px;
-  max-width: 220px;
+  max-width: 200px;
+  width: 200px;
   text-align: left;
 }
 
-.picture img {
+.picture .thumbnail {
   display: block;
-  margin-bottom: 6px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+}
+
+.picture .thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .meta h5,
