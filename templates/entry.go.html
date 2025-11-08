@@ -19,7 +19,7 @@
         {{ if .Name }}
             {{ if .Url }}
             <div class="entry-name">
-                <h2><a href={{ .Url }} target="_blank">{{ .Name }}</a></h2>
+                <h2><a href={{ .Url }} target="_blank" {{if .RelMe }}rel="me"{{ end }}>{{ .Name }}</a></h2>
                 {{ template "ext-link" }}
             </div>
             {{ else }}

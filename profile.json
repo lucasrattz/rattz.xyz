@@ -101,7 +101,8 @@
         {
           "timeframe": "GitHub",
           "entryName": "lucasrattz",
-          "url": "https://github.com/lucasrattz"
+          "url": "https://github.com/lucasrattz",
+          "relMe": true
         },
         {
           "timeframe": "LinkedIn",

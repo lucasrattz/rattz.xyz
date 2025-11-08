@@ -30,6 +30,7 @@ type Entry struct {
 	Description string   `json:"entryDescription"`
 	Url         string   `json:"url"`
 	Stack       []string `json:"stack"`
+	RelMe       bool     `json:"relMe"`
 }
 
 type Kind int
