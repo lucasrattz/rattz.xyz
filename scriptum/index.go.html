@@ -1,0 +1,33 @@
+{{ define "scriptum" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+  <link rel="stylesheet" media="all" href="/static/styles/codex-style.css">
+  <title>Codex Rattzii ・ Scriptum</title>
+</head>
+
+<body>
+  <section>
+    <p style="margin-bottom: 0;"><a href="/">← Go back.</a></p>
+    <h1 style="margin-top: 0;">Codex Scriptum</h1>
+    <p>I like writing. Here I dump any not-terrible enough text, without filtering: you may find technical articles, blog-like posts, chronicles and poems. I'm yet to develop a tagging system — for now the only way to know what a text is about, is to read it.</p>
+    <p>Note: some texts are English-only, others are available only in Portuguese.</p>
+    <p>All text is 100% human-made.</p>
+  </section>
+  <p>
+  </p>
+  <hr />
+  <h4>Posts</h4>
+
+  {{ range .Pages }}
+    {{ template "page" . }}
+  {{ end }}
+
+</body>
+
+</html>
+{{ end }}

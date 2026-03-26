@@ -3,23 +3,17 @@
  * Tokyo Night: https://github.com/tokyo-night/tokyo-night-vscode-theme
  */
 
-@import url('https://fonts.cdnfonts.com/css/fantasque-sans-mono');
+@import url(https://db.onlinewebfonts.com/c/f2b5ce87535b6e1cdb4690f094ac6667?family=Fantasque+Sans+Mono+Regular);
 
 :root {
   --color-blossom: #64aaff;
-  /* Neon Cyan for accents */
   --color-fade: #9d7cd8;
-  /* Softer, richer purple for hover states */
   --color-bg: #24283b;
-  /* Keeping original clean dark blue */
   --color-bg-alt: #1f2335;
-  /* Secondary background */
   --color-visited: #b48ead;
-  /* More distinct visited link color */
   --color-text: #a9b1d6;
-  /* Keeping the clean, readable text */
 
-  --typeface: "Fantasque Sans Mono", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --typeface: "Fantasque Sans Mono Regular", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
 }
 
 /* Body */
@@ -29,12 +23,15 @@ html {
 }
 
 body {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   line-height: 1.1;
   max-width: 38em;
   margin: auto;
+  margin-top: 5vh;
   color: var(--color-text);
   background-color: var(--color-bg);
+  background-image: radial-gradient(circle, var(--color-bg-alt) 1px, transparent 1px);
+  background-size: 20px 20px;
   padding: 13px;
 }
 
@@ -57,7 +54,6 @@ h4,
 h5,
 h6 {
   line-height: 1.1;
-  /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; */
   font-family: var(--typeface);
   font-weight: 700;
   margin-top: 3rem;
@@ -165,7 +161,6 @@ pre {
   overflow-x: auto;
   margin-top: 0px;
   margin-bottom: 2.5rem;
-  padding-bottom: 0;
   overflow-y: hidden;
   font-size: 0.9em;
 }
@@ -270,7 +265,6 @@ select,
 input {
   color: var(--color-text);
   padding: 6px 10px;
-  /* The 6px vertically centers text on FF, ignored by Webkit */
   margin-bottom: 10px;
   background-color: var(--color-bg-alt);
   border: 1px solid var(--color-bg-alt);
@@ -301,4 +295,73 @@ fieldset {
 b,
 strong {
   font-weight: bold;
+}
+
+.links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  justify-items: center;
+}
+
+.links a {
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.links a:hover {
+  border-bottom-color: var(--color-text);
+}
+
+.icon {
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+}
+
+.buttons img {
+  margin: 0;
+}
+
+.buttons a {
+  border-bottom: none;
+}
+
+reverse {
+  display: inline-block;
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.ref {
+  position: relative;
+  cursor: pointer;
+}
+
+.ref::after {
+  content: attr(data-preview);
+  position: absolute;
+  bottom: 115%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-bg-alt);
+  color: var(--color-blossom);
+  padding: 6px 10px;
+  font-size: 0.9em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.ref:hover::after,
+.ref:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
 }

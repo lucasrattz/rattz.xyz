@@ -1,0 +1,13 @@
+{{ define "image" }}
+  {{if .Filename}}
+    <div id="{{ .Filename }}" class="modal">
+      <p style="margin: 0 0 6px 0; font-size: 1.3rem;">{{ .Date }}</p>
+      <h5 style="margin: 0 0 6px 0;">{{ .Title }}</h5>
+      <a href="/codex/album#{{.Filename}}">
+        <img style="margin: 0 0 6px 0; max-width: 50%; max-height: 300px;" src="/codex/album/{{ .Filename }}">
+      </a>
+    </div>
+  {{else}}
+    <h5>Something went very wrong with the picture of the day 😓.</h5>
+  {{end}}
+{{ end }}

@@ -1,0 +1,9 @@
+{{ define "page" }}
+<div>
+  <p style="margin: 0 0 6px 0; font-size: 1.3rem;">{{ .Date }}</p>
+  <h5 style="margin: 0 0 6px 0;">
+    <a href="/codex/scriptum/{{ .Slug }}">{{ .Title }}</a>
+  </h5>
+  <p style="margin: 0;">{{ .Desc }}</p>
+</div>
+{{ end }}

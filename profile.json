@@ -1,8 +1,8 @@
 {
   "name": "Lucas Rattz",
   "description": "Kubernetes Enjoyer",
-  "profilePicture": "static/assets/profile.webp",
-  "favicon": "static/assets/favicon.ico",
+  "profilePicture": "/static/assets/profile.webp",
+  "favicon": "/static/assets/favicon.ico",
   "render": false,
   "sections": [
     {
@@ -72,7 +72,7 @@
       "entries": [
         {
           "timeframe": "ongoing",
-          "projectIcon": "static/assets/cefetdb.svg",
+          "projectIcon": "/static/assets/cefetdb.svg",
           "entryName": "CEFETDB",
           "entryDescription": "A widely adopted platform for CEFET/RJ Information Systems alumni to share study materials. Currently working in a refactor.",
           "url": "https://cefetdb.rattz.xyz",
@@ -83,7 +83,7 @@
         },
         {
           "timeframe": "2023",
-          "projectIcon": "static/assets/bladehub.svg",
+          "projectIcon": "/static/assets/bladehub.svg",
           "entryName": "Bladehub",
           "entryDescription": "A fork of Tim Pasquini's Blades in the Dark Generators with a web front-end.",
           "url": "https://lucasrattz.github.io/bladehub/",

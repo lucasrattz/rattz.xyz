@@ -22,7 +22,9 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 
 COPY ./templates ./templates
 
-COPY ./codex ./codex
+COPY ./scriptum ./scriptum
+
+COPY ./profile ./profile
 
 RUN mkdir ./gallery
 

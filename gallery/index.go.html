@@ -8,15 +8,14 @@
   <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
   <link rel="stylesheet" media="all" href="/static/styles/codex-style.css">
   <link rel="stylesheet" media="all" href="/static/styles/gallery-style.css">
-  <title>Lucas Rattz' Codex</title>
+  <title>Codex Rattzii ・ Album</title>
 </head>
 
 <body>
   <section>
-    <h1>Lucas Rattz' Codex</h1>
-    <p>A place for sharing pictures I've taken, drawn or somehow created.</p>
-    <p style="white-space: pre-line; line-height: 20pt;"><a href="/codex">✍︎ See posts.</a>
-    <a href="/">← Go back to the landing page.</a></p>
+    <p style="margin-bottom: 0;"><a href="/">← Go back.</a></p>
+    <h1 style="margin-top: 0;">Codex Album</h1>
+    <p>A place for sharing pictures I've taken, drawn or somehow created. I'm not good at photography nor do I know how to draw.</p>
   </section>
   <p>
   </p>
@@ -27,7 +26,7 @@
   {{ range . }}
     <div class="picture">
       <a href="#{{ .Filename }}" class="thumbnail">
-          <img src="/codex/pics/{{ .Filename }}" width="200" alt="{{ .Title }}">
+          <img src="/codex/album/{{ .Filename }}" width="200" alt="{{ .Title }}">
       </a>
       <div class="meta">
         <h5>{{ .Title }}</h5>
@@ -39,7 +38,7 @@
     <div id="{{ .Filename }}" class="modal">
       <div class="content">
         <a href="#" class="close">×</a>
-        <img src="/codex/pics/{{ .Filename }}">
+        <img src="/codex/album/{{ .Filename }}">
         <div class="meta-modal">
           <h5>{{ .Title }}</h5>
           <p>{{ .Date }}</p>

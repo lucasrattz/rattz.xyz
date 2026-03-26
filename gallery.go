@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/fs"
 	"log/slog"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -283,4 +284,22 @@ func downloadFile(url, dest string) error {
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
+}
+
+func (g *Gallery) ImageOfTheDay() (Image, error) {
+	g.mu.RLock()
+	defer g.mu.RUnlock()
+
+	if len(g.Images) == 0 {
+		return Image{}, fmt.Errorf("no images in gallery")
+	}
+
+	now := time.Now().UTC()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	seed := today.Unix()
+
+	r := rand.New(rand.NewSource(seed))
+	idx := r.Intn(len(g.Images))
+
+	return g.Images[idx], nil
 }

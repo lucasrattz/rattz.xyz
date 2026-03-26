@@ -1,28 +1,32 @@
-.picture {
-  display: inline-block;
-  vertical-align: top;
-  margin: 10px;
-  max-width: 200px;
-  width: 200px;
-  text-align: left;
+#gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
 }
 
-@media (max-width: 694px) {
-  .picture {
-    max-width: 140px !important;
-    width: 140px;
-  }
-
+@media (max-width: 900px) {
   #gallery {
-    margin-left: auto;
-    margin-right: auto;
+    grid-template-columns: repeat(2, 1fr);
   }
+}
+
+@media (max-width: 500px) {
+  #gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.picture {
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
 
 .picture .thumbnail {
   display: block;
   width: 100%;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 
@@ -39,8 +43,6 @@
 
 .meta small {
   display: block;
-  margin: 0;
-  max-width: 200px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -67,18 +69,11 @@
 
 .content {
   position: relative;
-  width: fit-content;
-  height: fit-content;
   max-width: 70vw;
-  margin: auto;
-  padding: 0;
-  background: transparent;
   display: grid;
-  grid-template-columns: 1fr;
 }
 
 .content img {
-  width: auto;
   max-width: 70vw;
   max-height: 70vh;
   margin-bottom: 4px;
@@ -93,6 +88,7 @@
   text-decoration: none;
 }
 
-.close:hover, .thumbnail:hover {
+.close:hover,
+.thumbnail:hover {
   border-bottom: none;
 }

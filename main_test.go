@@ -12,6 +12,6 @@ func BenchmarkIndexHandler(b *testing.B) {
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodGet, "/", nil)
 	for i := 0; i < b.N; i++ {
-		indexHandler(w, r, tmpl)
+		profileHandler(w, r, tmpl)
 	}
 }

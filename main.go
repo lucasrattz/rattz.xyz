@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"compress/gzip"
 	"embed"
 	"encoding/json"
@@ -47,9 +46,9 @@ func main() {
 		log.Fatalf("%s", err.Error())
 	}
 
-	tmpl := template.Must(template.ParseGlob("templates/*.go.html"))
+	profileTmpl := template.Must(template.ParseGlob("profile/*.go.html"))
 
-	codex, err := newCodex()
+	scriptum, err := newScriptum()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,20 +62,40 @@ func main() {
 		slog.Error("Failed to populate gallery on startup:", "err", err)
 	}
 
+	codex, err := newCodex(scriptum, gallery)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	conn := fmt.Sprint(host, ":", port)
 
 	router := http.NewServeMux()
-	router.HandleFunc("/", gzipHandler(func(w http.ResponseWriter, r *http.Request) {
-		indexHandler(w, r, tmpl)
-	}))
+
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Path = "/codex"
+		router.ServeHTTP(w, r)
+	})
+
 	router.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) { updateHandler(w, r, gallery) })
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
-	router.Handle("/static/", gzipFileServer("/static/", http.FS(subFS)))
+	router.Handle("/static/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasSuffix(r.URL.Path, "/") {
+			http.NotFound(w, r)
+			return
+		}
+
+		gzipFileServer("/static/", http.FS(subFS)).ServeHTTP(w, r)
+	}))
 
 	router.HandleFunc("/codex/", gzipHandler(codex.codexHandler))
-	router.HandleFunc("/codex/{id}", gzipHandler(codex.codexHandler))
-	router.HandleFunc("/codex/pics", gzipHandler(gallery.galleryHandler))
-	router.HandleFunc("/codex/pics/{fileName}", gzipHandler(gallery.galleryHandler))
+	router.HandleFunc("/codex/scriptum", gzipHandler(scriptum.scriptumHandler))
+	router.HandleFunc("/codex/scriptum/{id}", gzipHandler(scriptum.scriptumHandler))
+	router.HandleFunc("/codex/album", gzipHandler(gallery.galleryHandler))
+	router.HandleFunc("/codex/album/{fileName}", gzipHandler(gallery.galleryHandler))
+
+	router.HandleFunc("/profile/", gzipHandler(func(w http.ResponseWriter, r *http.Request) {
+		profileHandler(w, r, profileTmpl)
+	}))
 
 	slog.Info("Server running on " + "http://" + conn)
 	log.Fatal(http.ListenAndServe(conn, router))
@@ -133,37 +152,6 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request, tmpl *template.Template) {
-	if r.URL.Path != "/" {
-		errorHandler(w, r, http.StatusNotFound, tmpl)
-		return
-	}
-
-	var buf bytes.Buffer
-
-	p, err := getProfile()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		slog.Error("Error loading profile: " + err.Error())
-		return
-	}
-
-	err = tmpl.ExecuteTemplate(&buf, "index", p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		slog.Error("Error executing template: " + err.Error())
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
-	_, err = buf.WriteTo(w)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		slog.Error("Error writing html to buffer: " + err.Error())
-		return
-	}
-}
-
 func updateHandler(w http.ResponseWriter, r *http.Request, g *Gallery) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -211,37 +199,4 @@ func updateHandler(w http.ResponseWriter, r *http.Request, g *Gallery) {
 	}
 
 	http.Redirect(w, r, "/", http.StatusFound)
-}
-
-func errorHandler(w http.ResponseWriter, r *http.Request, status int, tmpl *template.Template) {
-	w.WriteHeader(status)
-	if status == http.StatusNotFound {
-		var buf bytes.Buffer
-
-		p, err := getProfile()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			slog.Error("Error loading profile: " + err.Error())
-			return
-		}
-
-		err = tmpl.ExecuteTemplate(&buf, "404", p)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			slog.Error("Error executing template: " + err.Error())
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/html; charset=UTF-8")
-
-		_, err = buf.WriteTo(w)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			slog.Error("Error writing html to buffer: " + err.Error())
-			return
-		}
-	} else {
-		slog.Error("Error " + http.StatusText(status) + " in " + r.URL.Path)
-		http.Error(w, http.StatusText(status), status)
-	}
 }
