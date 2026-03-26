@@ -6,6 +6,8 @@ on:
     paths:
       - 'static'
       - 'templates'
+      - 'scriptum'
+      - 'profile'
       - 'gallery/**.go'
       - 'gallery/**.html'
       - 'Dockerfile'
