@@ -1,9 +1,9 @@
 {{ define "page" }}
-<div>
-  <p style="margin: 0 0 6px 0; font-size: 1.3rem;">{{ .Date }}</p>
+<div class="h-entry">
+  <time style="margin: 0 0 6px 0; font-size: 1.3rem;" datetime="{{ .Date }}" class="dt-published">{{ .Date }}</time>
   <h5 style="margin: 0 0 6px 0;">
-    <a href="/codex/scriptum/{{ .Slug }}">{{ .Title }}</a>
+    <a href="/codex/scriptum/{{ .Slug }}" class="p-name u-url">{{ .Title }}</a>
   </h5>
-  <p style="margin: 0;">{{ .Desc }}</p>
+  <p style="margin: 0;" class="p-summary">{{ .Desc }}</p>
 </div>
 {{ end }}

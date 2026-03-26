@@ -23,9 +23,11 @@
   <hr />
   <h4>Posts</h4>
 
+  <div class="h-feed">
   {{ range .Pages }}
     {{ template "page" . }}
   {{ end }}
+  </div>
 
 </body>
 

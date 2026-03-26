@@ -17,37 +17,46 @@
     <h1 style="margin-top: 0;">Codex Album</h1>
     <p>A place for sharing pictures I've taken, drawn or somehow created. I'm not good at photography nor do I know how to draw.</p>
   </section>
-  <p>
-  </p>
+
   <hr />
+
   <h4>Pictures</h4>
 
-  <div id="gallery">
+  <div id="gallery" class="h-feed">
   {{ range . }}
-    <div class="picture">
-      <a href="#{{ .Filename }}" class="thumbnail">
-          <img src="/codex/album/{{ .Filename }}" width="200" alt="{{ .Title }}">
-      </a>
-      <div class="meta">
-        <h5>{{ .Title }}</h5>
-        <p>{{ .Date }}</p>
-        <!-- <small>{{ .Description }}</small> -->
-      </div>
-    </div>
 
-    <div id="{{ .Filename }}" class="modal">
-      <div class="content">
-        <a href="#" class="close">×</a>
-        <img src="/codex/album/{{ .Filename }}">
-        <div class="meta-modal">
-          <h5>{{ .Title }}</h5>
-          <p>{{ .Date }}</p>
-          <!-- <small>{{ .Description }}</small> -->
+    <div class="picture h-entry">
+      <a href="/codex/album#{{ .Filename }}" style="display:none;" class="u-url" ></a>
+
+      <a href="#{{ .Filename }}" class="thumbnail">
+        <img src="/codex/album/{{ .Filename }}" width="200" alt="{{ .Title }}" class="u-photo">
+      </a>
+
+      <div class="meta">
+        <h5 class="p-name">{{ .Title }}</h5>
+        <time datetime="{{ .Date }}" class="dt-published">{{ .Date }}</time>
+        <!-- <small class="p-summary">{{ .Description }}</small> -->
+      </div>
+
+      <div id="{{ .Filename }}" class="modal">
+        <div class="content">
+          <a href="#" class="close">×</a>
+
+          <img src="/codex/album/{{ .Filename }}" alt="{{ .Title }}" class="u-photo">
+
+          <div class="meta-modal">
+            <h5 class="p-name">{{ .Title }}</h5>
+            <time datetime="{{ .Date }}" class="dt-published">{{ .Date }}</time>
+            <!-- <small class="e-content">{{ .Description }}</small> -->
+          </div>
         </div>
       </div>
+
     </div>
-    {{ end }}
+
+  {{ end }}
   </div>
+
 </body>
 </html>
 {{ end }}
