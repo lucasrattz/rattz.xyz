@@ -110,7 +110,7 @@ a {
 }
 
 a:visited {
-  color: var(--color-visited);
+  color: var(--color-blossom);
 }
 
 a:hover {
