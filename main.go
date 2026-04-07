@@ -71,10 +71,7 @@ func main() {
 
 	router := http.NewServeMux()
 
-	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		r.URL.Path = "/codex"
-		router.ServeHTTP(w, r)
-	})
+	router.HandleFunc("/", gzipHandler(codex.codexHandler))
 
 	router.HandleFunc("/update/", func(w http.ResponseWriter, r *http.Request) { updateHandler(w, r, gallery) })
 	router.Handle("/cefetdb/", http.RedirectHandler("https://cefetdb.rattz.xyz", http.StatusFound))
